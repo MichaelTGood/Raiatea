@@ -1,4 +1,5 @@
-﻿using System;
+﻿using MimeKit;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -6,6 +7,8 @@ namespace Raiatea
 {
     public partial class App : Application
     {
+        public MimeMessage CurrentGlobalMessage;
+
         public App()
         {
             InitializeComponent();

@@ -3,49 +3,38 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:c="Microsoft.Toolkit.Uwp.UI.Controls"
              xmlns:vm="clr-namespace:Raiatea.ViewModel"
-             xmlns:view="clr-namespace:Raiatea.View"
+             xmlns:view="clr-namespace:Raiatea.View;assembly=Raiatea"
              xmlns:fa="clr-namespace:FontAwesome"
              x:Class="Raiatea.MainPage">
     <ContentPage.BindingContext>
-        <vm:MainPageViewModel/>
+        <vm:MainPageViewModel x:Name="MPVM"/>
     </ContentPage.BindingContext>
     <ContentPage.Resources>
         <ResourceDictionary>
-            <DataTemplate x:Key="EmailSlab">
-                <StackLayout
-                    Margin="10, 0, 0, 0"
-                    >
-                    <Label x:Name="FromLabel"
-                           TextColor="Black"
-                           Text="{Binding From[0].Name}"
-                           />
-                    <Label x:Name="SubjectLabel"
-                           TextColor="Gray"
-                           Text="{Binding Subject}"
-                           />
-                </StackLayout>
-            </DataTemplate>
+            <ResourceDictionary Source="ResourceDictionaries/EmailResourceDictionary.xaml"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Grid>
+    <Grid x:Name="MainPageGrid"  MinimumWidthRequest="500"
+         >
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="4*"/>
         </Grid.ColumnDefinitions>
 
         <Grid x:Name="BoxPane"
-              Grid.Column="0">
+            Grid.Column="0"
+               MinimumWidthRequest="800">
             <Grid.RowDefinitions>
                 <RowDefinition Height="auto"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            
+
             <!-- Header -->
             <Rectangle x:Name="BoxPaneHeaderBG"
-                       Fill="CornflowerBlue"
-                       Grid.Row="0"
-                       />
+                    Fill="CornflowerBlue"
+                    Grid.Row="0"
+                    />
             <Label x:Name="BoxPaneHeader"
                 Text="Inbox"
                 Grid.Row="0"
@@ -74,15 +63,132 @@
         </Grid>
 
         <view:MessageDisplayView
-            x:Name="MyDisplayView"
-            Grid.Column="1"
-            />
+                     Grid.Column="1"
+            Message="{Binding CurrentMessage}"/>
 
-        <!--<WebView x:Name="ReadingPane"
-                Grid.Column="1"
-                BackgroundColor="AliceBlue"
-                Source="{Binding WebViewSource}"
-                />-->
+        <!--<ContentView x:Name="ReadingPane"
+                     Grid.Column="1">
+            <ContentView.Content>
+                <Grid>
+                    <Grid.RowDefinitions>
+                        --><!-- Toolbar --><!--
+                        <RowDefinition Height="auto"/>
+                        --><!-- Subject line --><!--
+                        <RowDefinition Height="auto"/>
+                        --><!-- To/From/Date --><!--
+                        <RowDefinition Height="auto"/>
+                        --><!-- Body --><!--
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    
+
+                    --><!-- Toolbar --><!--
+                    <StackLayout x:Name="Toolbar"
+                Grid.Row="0"
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="Azure"
+                >
+                        <Button
+                    Text="{x:Static fa:FontAwesomeIcons.Reply}"
+                    FontFamily="FAS"
+                    />
+                        <Button
+                    Text="{x:Static fa:FontAwesomeIcons.ReplyAll}"
+                    FontFamily="FAS"
+                    />
+                        <Button
+                    Text="{x:Static fa:FontAwesomeIcons.Forward}"
+                    FontFamily="FAS"
+                    />
+                        <Button
+                    Text="{x:Static fa:FontAwesomeIcons.Star}"
+                    FontFamily="FAS"
+                    />
+                        <Button
+                    Text="{x:Static fa:FontAwesomeIcons.EnvelopeOpen}"
+                    FontFamily="FAS"
+                    />
+                    </StackLayout>
+                    
+                        --><!-- Subject Line --><!--
+                    <Label x:Name="SubjectLine"
+                            Grid.Row="1"
+                            Text="{Binding CurrentMessage.Subject}"
+                           Style="{StaticResource SubjectLine}"
+                            />
+                    
+                    <Grid x:Name="ToFromDateGrid"
+                          Grid.Row="2"
+                          Margin="0"
+                          Padding="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="2*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <Frame
+                            Grid.Column="0"
+                            BorderColor="DodgerBlue"
+                            HorizontalOptions="FillAndExpand"
+                            MinimumWidthRequest="800"
+                            >
+                            --><!-- To/From/Date --><!--
+                            <StackLayout Orientation="Vertical"
+                                Grid.Row="2"
+                                >
+                                <StackLayout Orientation="Horizontal">
+                                    <Label
+                                        Text="From:"
+                                        Style="{StaticResource Descr}"
+                                        />
+                                <StackLayout Orientation="Vertical"
+                                             Spacing="0">
+                                    <Label
+                                        x:Name="FromNameDisplay"
+                                        Text="{Binding CurrentMessage.From[0].Name}"
+                                        Style="{StaticResource Name}"
+                                        />
+                                        <Label
+                                        x:Name="FromEmailDisplay"
+                                        Text="{Binding CurrentMessage.From[0].Address}"
+                                        Style="{StaticResource SubName}"
+                                        />
+                                </StackLayout>
+                                </StackLayout>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label
+                                        Text="To:"
+                                        Style="{StaticResource Descr}"
+                                        />
+                                    <Label
+                                        x:Name="ToDisplay"
+                                        Text="{Binding CurrentMessage.To}"
+                                        Style="{StaticResource Name}"
+                                        />
+                                </StackLayout>
+                            </StackLayout>
+                        </Frame>
+                    </Grid>
+
+                    --><!-- Body --><!--
+                    <Frame
+                        Grid.Row="3"
+                        BorderColor="DodgerBlue"
+                        HorizontalOptions="FillAndExpand"
+                        Padding="5"
+                        Margin="10, 25, 10, 25"
+                        >
+                    <WebView x:Name="BodyDisplay"
+                        BackgroundColor="AliceBlue"
+                        Source="{Binding WebViewSource}"
+                        />
+                    </Frame>
+
+                </Grid>
+            </ContentView.Content>
+        </ContentView>-->
+
     </Grid>
-    
+
 </ContentPage>

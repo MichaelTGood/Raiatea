@@ -1,19 +1,16 @@
 ﻿using MimeKit;
 using Raiatea.EmailLogic;
-using Raiatea.EmailLogic.Models;
-using System;
-using System.Collections.Generic;
+using Raiatea.Helpers;
+using Raiatea.View;
 using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
 namespace Raiatea.ViewModel
 {
-    public class MainPageViewModel
+    [XamlCompilation(XamlCompilationOptions.Compile)]
+    public class MainPageViewModel : ObservableObject
     {
         #region Variables
 
@@ -39,32 +36,40 @@ namespace Raiatea.ViewModel
                         webViewSource.Html = "";
                         webViewSource.BaseUrl = "";
                     }
+
                     return webViewSource;
                 }
             }
 
+
             private MimeMessage currentMessage;
             public MimeMessage CurrentMessage
             {
-                get { return currentMessage; }
+                get => currentMessage;
+                set
+                {
+                    SetProperty(ref currentMessage, value, nameof(CurrentMessage));
+                }
             }
+
 
             public ICommand OnRefreshBoxList { get; }
             public ICommand BoxList_SelectionChanged { get; }
 
-        public MessageDisplayViewModel MessageDisplayVM { get; set; }
-
         #endregion
+
+
+
 
         public MainPageViewModel()
         {
             // Remove This
             webViewSource.Html = "";
-            
-            
 
             BoxList_SelectionChanged = new Command<MimeMessage>(LoadMessageDisplay);
             OnRefreshBoxList = new Command(RetrieveEmail);
+
+            
         }
 
 
@@ -84,7 +89,8 @@ namespace Raiatea.ViewModel
 
         private void LoadMessageDisplay(MimeMessage message)
         {
-            currentMessage = message;
+            CurrentMessage = message;
+            WebViewSource.Html = CurrentMessage.HtmlBody;
         }
 
         private void LoadWebViewSource(MimeMessage message)

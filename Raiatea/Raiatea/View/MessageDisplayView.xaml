@@ -6,9 +6,8 @@
              x:DataType="view:MessageDisplayView"
              xmlns:fa="clr-namespace:FontAwesome"
              x:Class="Raiatea.View.MessageDisplayView">
-    <!--<ContentView.BindingContext>
-        <vm:MessageDisplayViewModel/>
-    </ContentView.BindingContext>-->
+
+
   <ContentView.Content>
       <Grid>
             <Grid.RowDefinitions>
@@ -50,7 +49,7 @@
             <!-- Subject Line -->
             <Label x:Name="SubjectLine"
                 Grid.Row="1"
-                   Text="{Binding Message.Subject}"
+                   Text="{Binding }"
                 />
           
             <!-- To/From/Date -->
@@ -84,7 +83,7 @@
             <WebView x:Name="BodyDisplay"
                 Grid.Row="3"
                      BackgroundColor="AliceBlue"
-                     Source="{Binding BodyHtmlViewSource, Mode=TwoWay}"
+                     Source="{Binding BodyHtmlViewSource}"
                 />
 
 

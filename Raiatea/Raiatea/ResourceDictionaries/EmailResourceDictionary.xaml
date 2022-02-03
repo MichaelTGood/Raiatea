@@ -1,0 +1,42 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:fa="clr-namespace:FontAwesome"
+            x:Name="EmailResources">
+    <DataTemplate x:Key="EmailSlab">
+        <StackLayout
+                    Margin="10, 0, 0, 0"
+                    >
+            <Label x:Name="FromLabel"
+                           TextColor="Black"
+                           Text="{Binding From[0].Name}"
+                           />
+            <Label x:Name="SubjectLabel"
+                           TextColor="Gray"
+                           Text="{Binding Subject}"
+                           />
+        </StackLayout>
+    </DataTemplate>
+    <Style TargetType="Label" x:Key="SubjectLine">
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="FontSize" Value="Title"/>
+    </Style>
+    <Style TargetType="Label" x:Key="Name">
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="FontSize" Value="16"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontAttributes" Value="None"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style><Style TargetType="Label" x:Key="SubName">
+        <Setter Property="TextColor" Value="Black"/>
+        <Setter Property="FontSize" Value="10"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+        <Setter Property="FontAttributes" Value="None"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+    </Style>
+    <Style TargetType="Label" x:Key="Descr">
+        <Setter Property="TextColor" Value="Gray"/>
+        <Setter Property="VerticalTextAlignment" Value="Center"/>
+        <Setter Property="FontFamily" Value="Montserrat"/>
+    </Style>
+</ResourceDictionary>
