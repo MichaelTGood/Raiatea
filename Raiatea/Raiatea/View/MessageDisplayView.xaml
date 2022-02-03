@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
+             xmlns:view="clr-namespace:Raiatea.View" 
+             xmlns:vm="clr-namespace:Raiatea.ViewModel" 
+             x:DataType="view:MessageDisplayView"
+             xmlns:fa="clr-namespace:FontAwesome"
+             x:Class="Raiatea.View.MessageDisplayView">
+    <!--<ContentView.BindingContext>
+        <vm:MessageDisplayViewModel/>
+    </ContentView.BindingContext>-->
+  <ContentView.Content>
+      <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/> <!-- Toolbar -->
+                <RowDefinition Height="auto"/> <!-- Subject line -->
+                <RowDefinition Height="auto"/> <!-- To/From/Date -->
+                <RowDefinition Height="*"/> <!-- Body -->
+            </Grid.RowDefinitions>
+          
+            <!-- Toolbar -->
+            <StackLayout x:Name="Toolbar"
+                Grid.Row="0"
+                Orientation="Horizontal"
+                HorizontalOptions="FillAndExpand"
+                BackgroundColor="Azure"
+                >
+                <Button
+                    Text="{x:Static fa:FontAwesomeIcons.Reply}"
+                    FontFamily="FAS"
+                    />
+                <Button
+                    Text="{x:Static fa:FontAwesomeIcons.ReplyAll}"
+                    FontFamily="FAS"
+                    />
+                <Button
+                    Text="{x:Static fa:FontAwesomeIcons.Forward}"
+                    FontFamily="FAS"
+                    />
+                <Button
+                    Text="{x:Static fa:FontAwesomeIcons.Star}"
+                    FontFamily="FAS"
+                    />
+                <Button
+                    Text="{x:Static fa:FontAwesomeIcons.EnvelopeOpen}"
+                    FontFamily="FAS"
+                    />
+            </StackLayout>
+
+            <!-- Subject Line -->
+            <Label x:Name="SubjectLine"
+                Grid.Row="1"
+                   Text="{Binding Message.Subject}"
+                />
+          
+            <!-- To/From/Date -->
+            <StackLayout Orientation="Vertical"
+                Grid.Column="0"
+                Grid.Row="2"
+                >
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                        Text="From:"
+                        />
+                    <Label
+                        x:Name="FromDisplay"
+                        Text="{Binding Message.From[0].Name}"
+                        />
+                </StackLayout>
+                <StackLayout Orientation="Horizontal">
+                    <Label
+                        Text="To:"
+                        />
+                    <Label
+                        x:Name="ToDisplay"
+                        Text="{Binding Message.To}"
+                        />
+                </StackLayout>
+            </StackLayout>
+
+
+            <!-- Body -->
+            <!--<Frame></Frame>-->
+            <WebView x:Name="BodyDisplay"
+                Grid.Row="3"
+                     BackgroundColor="AliceBlue"
+                     Source="{Binding BodyHtmlViewSource, Mode=TwoWay}"
+                />
+
+
+        </Grid>
+  </ContentView.Content>
+</ContentView>

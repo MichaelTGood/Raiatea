@@ -1,0 +1,88 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:c="Microsoft.Toolkit.Uwp.UI.Controls"
+             xmlns:vm="clr-namespace:Raiatea.ViewModel"
+             xmlns:view="clr-namespace:Raiatea.View"
+             xmlns:fa="clr-namespace:FontAwesome"
+             x:Class="Raiatea.MainPage">
+    <ContentPage.BindingContext>
+        <vm:MainPageViewModel/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <DataTemplate x:Key="EmailSlab">
+                <StackLayout
+                    Margin="10, 0, 0, 0"
+                    >
+                    <Label x:Name="FromLabel"
+                           TextColor="Black"
+                           Text="{Binding From[0].Name}"
+                           />
+                    <Label x:Name="SubjectLabel"
+                           TextColor="Gray"
+                           Text="{Binding Subject}"
+                           />
+                </StackLayout>
+            </DataTemplate>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="4*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid x:Name="BoxPane"
+              Grid.Column="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            
+            <!-- Header -->
+            <Rectangle x:Name="BoxPaneHeaderBG"
+                       Fill="CornflowerBlue"
+                       Grid.Row="0"
+                       />
+            <Label x:Name="BoxPaneHeader"
+                Text="Inbox"
+                Grid.Row="0"
+                HorizontalTextAlignment="Center"
+                VerticalTextAlignment="Center"
+                />
+            <Button x:Name="BoxPaneRefreshButton"
+                    Grid.Row="0"
+                    HorizontalOptions="End"
+                    Text="{x:Static fa:FontAwesomeIcons.SyncAlt}"
+                    FontFamily="FAS"
+                    BackgroundColor="CornflowerBlue"
+                    Command="{Binding OnRefreshBoxList}"
+                    />
+
+            <!-- BoxList -->
+            <CollectionView x:Name="BoxList"
+                    Grid.Row="1"
+                    SelectionMode="Single"
+                    Margin="5, 0, 0, 10"
+                    ItemsSource="{Binding CurrentBox}"
+                    ItemTemplate="{StaticResource EmailSlab}"
+                    SelectionChangedCommand="{Binding BoxList_SelectionChanged}"
+                    SelectionChangedCommandParameter="{Binding SelectedItem, Source={x:Reference BoxList}}"
+                    />
+        </Grid>
+
+        <view:MessageDisplayView
+            x:Name="MyDisplayView"
+            Grid.Column="1"
+            />
+
+        <!--<WebView x:Name="ReadingPane"
+                Grid.Column="1"
+                BackgroundColor="AliceBlue"
+                Source="{Binding WebViewSource}"
+                />-->
+    </Grid>
+    
+</ContentPage>

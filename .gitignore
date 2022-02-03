@@ -3,12 +3,19 @@
 
 # Visual Studio (>=2015) project-specific, machine local files
 .vs/
+.vscode/
+
+# Jetbrains
+.idea/
 
 # User-specific files
 *.suo
 *.user
 *.sln.docstates
 *.userprefs
+
+# Private files and data
+Raiatea/Raiatea/Resources/Private/
 
 # ignore Xamarin.Android Resource.Designer.cs files
 **/*.Droid/**/[Rr]esource.[Dd]esigner.cs
@@ -193,3 +200,5 @@ UpgradeLog*.htm
 FakesAssemblies/
 
 .vscode/settings.json
+
+
