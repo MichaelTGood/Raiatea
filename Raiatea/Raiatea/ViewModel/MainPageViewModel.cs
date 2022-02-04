@@ -49,12 +49,27 @@ namespace Raiatea.ViewModel
                 set
                 {
                     SetProperty(ref currentMessage, value, nameof(CurrentMessage));
+                    OnPropertyChanged(nameof(DisplayReadingPane));
+                }
+            }
+
+            public bool DisplayReadingPane
+            {
+                get
+                {
+                    if(CurrentMessage == null)
+                        return false;
+
+                    return true;
                 }
             }
 
 
             public ICommand OnRefreshBoxList { get; }
             public ICommand BoxList_SelectionChanged { get; }
+            public ICommand ClearCurrentMessageCommand { get; }
+
+            public Color TransparentColor = Color.Transparent;
 
         #endregion
 
@@ -68,8 +83,9 @@ namespace Raiatea.ViewModel
 
             BoxList_SelectionChanged = new Command<MimeMessage>(LoadMessageDisplay);
             OnRefreshBoxList = new Command(RetrieveEmail);
+            ClearCurrentMessageCommand = new Command(ClearCurrentMessage);
 
-            
+
         }
 
 
@@ -93,9 +109,9 @@ namespace Raiatea.ViewModel
             WebViewSource.Html = CurrentMessage.HtmlBody;
         }
 
-        private void LoadWebViewSource(MimeMessage message)
+        private void ClearCurrentMessage()
         {
-            webViewSource.Html = message.HtmlBody;
+            CurrentMessage = null;
         }
     }
 }

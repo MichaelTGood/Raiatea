@@ -2,91 +2,156 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
              xmlns:view="clr-namespace:Raiatea.View" 
-             xmlns:vm="clr-namespace:Raiatea.ViewModel" 
              x:DataType="view:MessageDisplayView"
              xmlns:fa="clr-namespace:FontAwesome"
              x:Class="Raiatea.View.MessageDisplayView">
 
+    <ContentView.Content>
+        <Frame
+            BorderColor="SlateGray"
+            BackgroundColor="AliceBlue"
+            Margin="8"
+            Padding="5"
+            CornerRadius="0"
+          >
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <!-- Toolbar -->
+                    <RowDefinition Height="auto"/>
+                    <!-- To/From/Date -->
+                    <RowDefinition Height="auto"/>
+                    <!-- Subject line -->
+                    <RowDefinition Height="*"/>
+                    <!-- Body -->
+                </Grid.RowDefinitions>
 
-  <ContentView.Content>
-      <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="auto"/> <!-- Toolbar -->
-                <RowDefinition Height="auto"/> <!-- Subject line -->
-                <RowDefinition Height="auto"/> <!-- To/From/Date -->
-                <RowDefinition Height="*"/> <!-- Body -->
-            </Grid.RowDefinitions>
-          
-            <!-- Toolbar -->
-            <StackLayout x:Name="Toolbar"
+
+                <!-- Toolbar -->
+                <StackLayout x:Name="Toolbar"
                 Grid.Row="0"
                 Orientation="Horizontal"
                 HorizontalOptions="FillAndExpand"
-                BackgroundColor="Azure"
                 >
-                <Button
+                    <Button
                     Text="{x:Static fa:FontAwesomeIcons.Reply}"
                     FontFamily="FAS"
                     />
-                <Button
+                    <Button
                     Text="{x:Static fa:FontAwesomeIcons.ReplyAll}"
                     FontFamily="FAS"
                     />
-                <Button
+                    <Button
                     Text="{x:Static fa:FontAwesomeIcons.Forward}"
                     FontFamily="FAS"
                     />
-                <Button
+                    <Button
                     Text="{x:Static fa:FontAwesomeIcons.Star}"
                     FontFamily="FAS"
                     />
-                <Button
+                    <Button
                     Text="{x:Static fa:FontAwesomeIcons.EnvelopeOpen}"
                     FontFamily="FAS"
                     />
-            </StackLayout>
+                </StackLayout>
 
-            <!-- Subject Line -->
-            <Label x:Name="SubjectLine"
-                Grid.Row="1"
-                   Text="{Binding }"
-                />
-          
-            <!-- To/From/Date -->
-            <StackLayout Orientation="Vertical"
-                Grid.Column="0"
+
+
+                <!-- To/From/Date -->
+                <Frame
+                    Grid.Row="1"
+                    BorderColor="AliceBlue"
+                    Margin="20, 5, 20, 0"
+                    Padding="0, 0, 0, 3"
+                    >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="250"/>
+                            <ColumnDefinition Width="Auto"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="10"/>
+                        </Grid.ColumnDefinitions>
+
+
+                            <Label
+                                Text="From:"
+                                Grid.Column="0"
+                                Style="{StaticResource Descr}"
+                                />
+                            <StackLayout 
+                                Grid.Column="1"
+                                Orientation="Vertical"
+                                >
+                                <Label
+                                    x:Name="FromNameDisplay"
+                                    Style="{StaticResource Name}"
+                                    />
+                                <Label
+                                    x:Name="FromAddressDisplay"
+                                    Style="{StaticResource SubName}"
+                                    />
+                            </StackLayout>
+
+                            <Label
+                                Text="To:"
+                                Grid.Column="2"
+                                Style="{StaticResource Descr}"
+                                />
+                            <StackLayout 
+                                Grid.Column="3"
+                                Orientation="Vertical"
+                                HorizontalOptions="FillAndExpand">
+                                <Label
+                                    x:Name="ToNameDisplay"
+                                    Style="{StaticResource Name}"
+                                    />
+                                <Label
+                                    x:Name="ToAddressDisplay"
+                                    Style="{StaticResource SubName}"
+                                    />
+                        </StackLayout>
+
+                        <!--<StackLayout  x:Name="DateStackLayout"
+                            Orientation="Horizontal"
+                            >-->
+                            <Label
+                                Grid.Column="5"
+                                x:Name="DateDisplay"
+                                Style="{StaticResource SubName}"
+                                HorizontalTextAlignment="End"
+                                HorizontalOptions="End"
+                                Margin="0, 0, 5, 0"
+                                />
+                        <!--</StackLayout>-->
+                    </Grid>
+                </Frame>
+
+                <!-- Subject Line -->
+                <Frame
                 Grid.Row="2"
+                BorderColor="AliceBlue"
+                Margin="20, 5, 20, 0"
+                Padding="0, 0, 0, 3"
                 >
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                        Text="From:"
-                        />
-                    <Label
-                        x:Name="FromDisplay"
-                        Text="{Binding Message.From[0].Name}"
-                        />
-                </StackLayout>
-                <StackLayout Orientation="Horizontal">
-                    <Label
-                        Text="To:"
-                        />
-                    <Label
-                        x:Name="ToDisplay"
-                        Text="{Binding Message.To}"
-                        />
-                </StackLayout>
-            </StackLayout>
+                    <Label x:Name="SubjectLine"
+                    Style="{StaticResource SubjectLine}"
+                    />
+                </Frame>
 
-
-            <!-- Body -->
-            <!--<Frame></Frame>-->
-            <WebView x:Name="BodyDisplay"
+                <!-- Body -->
+                <Frame BorderColor="SlateGray"
                 Grid.Row="3"
-                     BackgroundColor="AliceBlue"
-                     Source="{Binding BodyHtmlViewSource}"
+                HorizontalOptions="FillAndExpand"
+                Margin="20, 0, 20, 5"
+                Padding="0"
+                >
+                    <WebView x:Name="BodyDisplay"
                 />
+                </Frame>
 
 
-        </Grid>
-  </ContentView.Content>
+            </Grid>
+        </Frame>
+    </ContentView.Content>
 </ContentView>

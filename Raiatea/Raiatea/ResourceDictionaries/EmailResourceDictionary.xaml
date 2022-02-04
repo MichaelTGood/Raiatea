@@ -1,8 +1,7 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <ResourceDictionary xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml" 
-             xmlns:fa="clr-namespace:FontAwesome"
-            x:Name="EmailResources">
+             xmlns:fa="clr-namespace:FontAwesome">
     <DataTemplate x:Key="EmailSlab">
         <StackLayout
                     Margin="10, 0, 0, 0"
@@ -27,7 +26,8 @@
         <Setter Property="FontFamily" Value="Montserrat"/>
         <Setter Property="FontAttributes" Value="None"/>
         <Setter Property="VerticalTextAlignment" Value="Center"/>
-    </Style><Style TargetType="Label" x:Key="SubName">
+    </Style>
+    <Style TargetType="Label" x:Key="SubName">
         <Setter Property="TextColor" Value="Black"/>
         <Setter Property="FontSize" Value="10"/>
         <Setter Property="FontFamily" Value="Montserrat"/>

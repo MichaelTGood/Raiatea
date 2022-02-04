@@ -1,13 +1,4 @@
-﻿using MimeKit;
-using Raiatea.EmailLogic;
-using Raiatea.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Raiatea.ViewModel;
 using Xamarin.Forms;
 
 namespace Raiatea
@@ -18,8 +9,10 @@ namespace Raiatea
         {
             InitializeComponent();
             BindingContext = new MainPageViewModel();
+
             
         }
+
 
     }
 }

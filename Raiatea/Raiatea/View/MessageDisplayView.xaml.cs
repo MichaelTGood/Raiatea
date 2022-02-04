@@ -1,14 +1,33 @@
 ﻿using MimeKit;
-using System;
+using System.ComponentModel;
+using System.Globalization;
 using Xamarin.Forms;
-using Xamarin.Forms.Xaml;
 
 namespace Raiatea.View
 {
-    [XamlCompilation(XamlCompilationOptions.Compile)]
-    public partial class MessageDisplayView : ContentView
+    public partial class MessageDisplayView : ContentView, INotifyPropertyChanged
     {
-        //private MimeMessage message = new MimeMessage();
+        public string FromName { get; set; }
+
+        public string ToName
+        {
+            get
+            {
+                return (string)GetValue(ToNameProperty);
+                //return Message.To.ToString();
+            }
+            set
+            {
+                SetValue(ToNameProperty, value);
+                OnPropertyChanged(nameof(ToName));
+            }
+        }
+
+        public static BindableProperty ToNameProperty =
+            BindableProperty.Create(nameof(ToName), typeof(string), typeof(MessageDisplayView), "Default To Field",
+                BindingMode.TwoWay);
+
+
         public MimeMessage Message
         {
             get
@@ -25,6 +44,7 @@ namespace Raiatea.View
             BindableProperty.Create(nameof(Message), typeof(MimeMessage), typeof(MessageDisplayView), new MimeMessage(),
                 BindingMode.TwoWay);
 
+
         protected override void OnPropertyChanged(string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
@@ -33,14 +53,10 @@ namespace Raiatea.View
             {
                 if(Message != null)
                 {
-                    FromDisplay.Text = Message.From[0].ToString();
-                    ToDisplay.Text = Message.To.ToString();
-                    SubjectLine.Text = Message.Subject;
-                    bodyHtmlViewSource.Html = Message.HtmlBody;
+                    BadUIUpdate();
                 }
             }
         }
-
 
         private HtmlWebViewSource bodyHtmlViewSource = new HtmlWebViewSource();
         public HtmlWebViewSource BodyHtmlViewSource
@@ -52,13 +68,68 @@ namespace Raiatea.View
             }
         }
 
-        
+        private void BadUIUpdate()
+        {
+            if(Message.To.Count > 0)
+            {
+                var toName = Message.To[0].Name;
+                var toAddress = (Message.To[0] as MailboxAddress).Address;
+                if (toAddress != null)
+                {
+                    if (!string.IsNullOrEmpty(toName))
+                    {
+                        ToNameDisplay.Text = toName;
+                        ToAddressDisplay.Text = toAddress;
+                        ToAddressDisplay.IsVisible = true;
+                    }
+                    else
+                    {
+                        ToNameDisplay.Text = toAddress;
+                        ToAddressDisplay.IsVisible = false;
+
+                    }
+                }
+                else
+                {
+                    ToNameDisplay.IsVisible = false;
+                    ToAddressDisplay.IsVisible = false;
+                }
+            }
+            else
+            {
+                ToNameDisplay.Text = "No Receiver Info";
+            }
+
+            var fromName = Message.From[0].Name;
+            var fromAddress = (Message.From[0] as MailboxAddress).Address;
+            if(fromAddress != null)
+            {
+                if(!string.IsNullOrEmpty(fromName))
+                {
+                    FromNameDisplay.Text = fromName;
+                    FromAddressDisplay.Text = fromAddress;
+                    FromAddressDisplay.IsVisible = true;
+                }
+                else
+                {
+                    FromNameDisplay.Text = fromAddress;
+                    FromAddressDisplay.IsVisible = false;
+                    
+                }
+            }
+
+            SubjectLine.Text = Message.Subject;
+            DateDisplay.Text = Message.Date.ToLocalTime().ToString("f", CultureInfo.GetCultureInfo("en-US"));
+            bodyHtmlViewSource.Html = Message.HtmlBody;
+            BodyDisplay.Source = BodyHtmlViewSource;
+        }
 
         public MessageDisplayView()
         {
             InitializeComponent();
 
             bodyHtmlViewSource.Html = "";
+            ToName = "This is a test name";
 
         }
     }

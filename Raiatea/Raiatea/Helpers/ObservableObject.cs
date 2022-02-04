@@ -23,8 +23,8 @@ namespace Raiatea.Helpers
 		protected virtual bool SetProperty<T>(
 			ref T backingStore, T value,
 			[CallerMemberName] string propertyName = "",
-			Action? onChanged = null,
-			Func<T, T, bool>? validateValue = null)
+			Action onChanged = null,
+			Func<T, T, bool> validateValue = null)
 		{
 			//if value didn't change
 			if (EqualityComparer<T>.Default.Equals(backingStore, value))
