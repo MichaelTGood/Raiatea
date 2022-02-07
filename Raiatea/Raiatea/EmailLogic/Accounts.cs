@@ -9,9 +9,9 @@ namespace Raiatea.EmailLogic
 {
     public static class Accounts
     {
-        private static Dictionary<Resources.Private.AccountHosts, Account> emailAccounts;
+        private static Dictionary<Resources.Private.AccountHosts, EmailAccount> emailAccounts;
 
-        public static Dictionary<Resources.Private.AccountHosts, Account> EmailAccounts 
+        public static Dictionary<Resources.Private.AccountHosts, EmailAccount> EmailAccounts 
         { 
             get
             {

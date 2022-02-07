@@ -10,6 +10,7 @@ namespace Raiatea
             InitializeComponent();
             BindingContext = new MainPageViewModel();
 
+
             
         }
 

@@ -1,9 +1,13 @@
 ﻿using MimeKit;
 using Raiatea.EmailLogic;
-using Raiatea.Helpers;
+using Raiatea.Models;
 using Raiatea.View;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Threading.Tasks;
 using System.Windows.Input;
+using Xamarin.CommunityToolkit.Extensions;
+using Xamarin.CommunityToolkit.ObjectModel;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -42,13 +46,13 @@ namespace Raiatea.ViewModel
             }
 
 
-            private MimeMessage currentMessage;
-            public MimeMessage CurrentMessage
+            private MimeMessage currentEmail;
+            public MimeMessage CurrentEmail
             {
-                get => currentMessage;
+                get => currentEmail;
                 set
                 {
-                    SetProperty(ref currentMessage, value, nameof(CurrentMessage));
+                    SetProperty(ref currentEmail, value, nameof(CurrentEmail));
                     OnPropertyChanged(nameof(DisplayReadingPane));
                 }
             }
@@ -57,7 +61,7 @@ namespace Raiatea.ViewModel
             {
                 get
                 {
-                    if(CurrentMessage == null)
+                    if(CurrentEmail == null)
                         return false;
 
                     return true;
@@ -67,13 +71,10 @@ namespace Raiatea.ViewModel
 
             public ICommand OnRefreshBoxList { get; }
             public ICommand BoxList_SelectionChanged { get; }
-            public ICommand ClearCurrentMessageCommand { get; }
+            public ICommand ProducePopup { get; }
 
-            public Color TransparentColor = Color.Transparent;
 
         #endregion
-
-
 
 
         public MainPageViewModel()
@@ -82,10 +83,11 @@ namespace Raiatea.ViewModel
             webViewSource.Html = "";
 
             BoxList_SelectionChanged = new Command<MimeMessage>(LoadMessageDisplay);
-            OnRefreshBoxList = new Command(RetrieveEmail);
-            ClearCurrentMessageCommand = new Command(ClearCurrentMessage);
+            OnRefreshBoxList = new AsyncCommand(RetrieveEmailAsync);
+            ProducePopup = new Command(PopUpPopup);
 
-
+            //RetrieveEmail();
+            
         }
 
 
@@ -94,24 +96,43 @@ namespace Raiatea.ViewModel
             if (currentBox == null)
                 currentBox = new ObservableCollection<MimeMessage>();
 
-            foreach (var message in Retrieve.RetrieveInbox())
+            foreach (var email in Retrieve.RetrieveInbox())
             {
-                if (currentBox.Contains(message))
+                if (currentBox.Contains(email))
                     continue;
 
-                currentBox.Insert(0, message);
+                currentBox.Insert(0, email);
+            }
+        }
+
+        public async Task RetrieveEmailAsync()
+        {
+            if (currentBox == null)
+                currentBox = new ObservableCollection<MimeMessage>();
+
+            foreach (var email in await Retrieve.RetrieveInboxAsync())
+            {
+                if (currentBox.Contains(email))
+                {
+                    continue;
+                }
+                else
+                {
+                    currentBox.Insert(0, email);
+                }
+
             }
         }
 
         private void LoadMessageDisplay(MimeMessage message)
         {
-            CurrentMessage = message;
-            WebViewSource.Html = CurrentMessage.HtmlBody;
+            CurrentEmail = message;
+            WebViewSource.Html = CurrentEmail.HtmlBody;
         }
 
-        private void ClearCurrentMessage()
+        private void PopUpPopup()
         {
-            CurrentMessage = null;
+            //Navigation.ShowPopup(new TestContentPage());
         }
     }
 }

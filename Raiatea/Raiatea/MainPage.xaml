@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:c="Microsoft.Toolkit.Uwp.UI.Controls"
              xmlns:vm="clr-namespace:Raiatea.ViewModel"
-             xmlns:view="clr-namespace:Raiatea.View;assembly=Raiatea"
+             xmlns:view="clr-namespace:Raiatea.View"
              xmlns:fa="clr-namespace:FontAwesome"
              x:Class="Raiatea.MainPage">
     <ContentPage.BindingContext>
@@ -72,11 +72,14 @@
                     />
         </Grid>
         </Frame>
+        
+            
 
         <view:MessageDisplayView x:Name="ReadingPane"
                 Grid.Column="1"
                 IsVisible="{Binding DisplayReadingPane}"
-                Message="{Binding CurrentMessage}"/>
+                Message="{Binding CurrentEmail}"
+                />
 
 
     </Grid>
