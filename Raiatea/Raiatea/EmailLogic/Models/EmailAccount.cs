@@ -13,7 +13,12 @@ namespace Raiatea.EmailLogic.Models
             get => shortName;
             set
             {
-                shortName = string.Concat(value.Where(c => !char.IsWhiteSpace(c)));
+                var shortNameCondensed = string.Concat(value.Where(c => !char.IsWhiteSpace(c)));
+
+                if(shortNameCondensed.Length > 12)
+                    shortNameCondensed = shortNameCondensed.Substring(0, 12);
+
+                shortName = shortNameCondensed;
             }
         }
         public AuthenticationInfo AuthenticationInfo { get; set; }
@@ -23,10 +28,10 @@ namespace Raiatea.EmailLogic.Models
 
         public EmailAccount() { }
 
-        public EmailAccount(string name, string shortName, AuthenticationInfo authenticationInfo, ImapConfiguration imapConfig, SmtpConfiguration smtpConfig)
+        public EmailAccount(string name, AuthenticationInfo authenticationInfo, ImapConfiguration imapConfig, SmtpConfiguration smtpConfig)
         {
             Name = name;
-            ShortName = shortName;
+            ShortName = name;
             AuthenticationInfo = authenticationInfo;
             ImapConfig = imapConfig;
             SmtpConfig = smtpConfig;

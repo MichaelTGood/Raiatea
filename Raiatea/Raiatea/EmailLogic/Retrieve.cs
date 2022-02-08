@@ -1,7 +1,7 @@
 ﻿using MailKit.Net.Imap;
 using MimeKit;
 using Newtonsoft.Json;
-using Raiatea.Database;
+using Raiatea.Databases;
 using Raiatea.Models;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -65,7 +65,6 @@ namespace Raiatea.EmailLogic
                 {
                     var email = client.Inbox.GetMessage(uid);
                     emails.Add(email);
-                    DatabaseAccess.SaveEmailToDB(account, email);
                 }
 
                 client.Disconnect(true);

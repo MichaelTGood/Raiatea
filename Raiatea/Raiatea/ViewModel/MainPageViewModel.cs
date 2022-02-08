@@ -1,5 +1,7 @@
 ﻿using MimeKit;
+using Raiatea.Databases;
 using Raiatea.EmailLogic;
+using Raiatea.EmailLogic.Models;
 using Raiatea.Models;
 using Raiatea.View;
 using System.Collections.Generic;
@@ -57,6 +59,9 @@ namespace Raiatea.ViewModel
                 }
             }
 
+        public static BindableProperty CurrentEmailProperty =
+            BindableProperty.Create(nameof(CurrentEmail), typeof(MimeMessage), typeof(MainPageViewModel), new MimeMessage(), BindingMode.TwoWay);
+
             public bool DisplayReadingPane
             {
                 get
@@ -84,7 +89,7 @@ namespace Raiatea.ViewModel
 
             BoxList_SelectionChanged = new Command<MimeMessage>(LoadMessageDisplay);
             OnRefreshBoxList = new AsyncCommand(RetrieveEmailAsync);
-            ProducePopup = new Command(PopUpPopup);
+            ProducePopup = new Command(TestDatabase);
 
             //RetrieveEmail();
             
@@ -110,6 +115,8 @@ namespace Raiatea.ViewModel
             if (currentBox == null)
                 currentBox = new ObservableCollection<MimeMessage>();
 
+            var db = DatabaseAccess.GetOrCreateDatabase(Accounts.EmailAccounts[Resources.Private.AccountHosts.NJ].ShortName);
+
             foreach (var email in await Retrieve.RetrieveInboxAsync())
             {
                 if (currentBox.Contains(email))
@@ -121,6 +128,8 @@ namespace Raiatea.ViewModel
                     currentBox.Insert(0, email);
                 }
 
+                var someInt = await db.AddToTableAsync<Email>(new Email(email));
+                string filler = null;
             }
         }
 
@@ -130,9 +139,10 @@ namespace Raiatea.ViewModel
             WebViewSource.Html = CurrentEmail.HtmlBody;
         }
 
-        private void PopUpPopup()
+        private void TestDatabase()
         {
-            //Navigation.ShowPopup(new TestContentPage());
+            var db = DatabaseAccess.GetOrCreateDatabase(Accounts.EmailAccounts[Resources.Private.AccountHosts.NJ].ShortName);
+            //db.AddToTableAsync<MimeMessage>();
         }
     }
 }

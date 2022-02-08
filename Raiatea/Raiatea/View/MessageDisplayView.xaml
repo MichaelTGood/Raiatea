@@ -86,6 +86,7 @@
                                 <Label
                                     x:Name="FromNameDisplay"
                                     Style="{StaticResource Name}"
+                                    Text="{Binding FromName}"
                                     />
                                 <Label
                                     x:Name="FromAddressDisplay"
@@ -105,6 +106,7 @@
                                 <Label
                                     x:Name="ToNameDisplay"
                                     Style="{StaticResource Name}"
+                                    Text="{Binding ToName}"
                                     />
                                 <Label
                                     x:Name="ToAddressDisplay"

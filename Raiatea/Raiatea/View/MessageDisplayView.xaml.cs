@@ -1,4 +1,6 @@
 ﻿using MimeKit;
+using Raiatea.Models;
+using Raiatea.ViewModel;
 using System.ComponentModel;
 using System.Globalization;
 using Xamarin.Forms;
@@ -44,16 +46,22 @@ namespace Raiatea.View
             BindableProperty.Create(nameof(Message), typeof(MimeMessage), typeof(MessageDisplayView), new MimeMessage(),
                 BindingMode.TwoWay);
 
+        public new event PropertyChangedEventHandler PropertyChanged;
 
         protected override void OnPropertyChanged(string propertyName = null)
         {
             base.OnPropertyChanged(propertyName);
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
 
             if (propertyName == MessageProperty.PropertyName)
             {
                 if(Message != null)
                 {
-                    BadUIUpdate();
+                    FromName = Message.From[0].ToString();
+                    ToName = Message.To[0].Name;
+                    OnPropertyChanged(nameof(ToName));
+                    OnPropertyChanged(nameof(FromName));
+                    //BadUIUpdate();
                 }
             }
         }
@@ -127,10 +135,11 @@ namespace Raiatea.View
         public MessageDisplayView()
         {
             InitializeComponent();
+            //BindingContext = this;
 
             bodyHtmlViewSource.Html = "";
             ToName = "This is a test name";
-
         }
+
     }
 }
